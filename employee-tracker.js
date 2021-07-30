@@ -19,7 +19,7 @@ connection.connect(function (err) {
   console.log("WELCOME TO THE EMPLOYEE TRACKER");
   startApp();
 });
-// Start function
+// Start function, initial prompt
 const startApp = () => {
   inquirer
     .prompt([
@@ -41,15 +41,15 @@ const startApp = () => {
     .then(function (value) {
       switch (value.action) {
         case "View All Employees":
-          viewAllEmployees();
+          viewEmployees();
           break;
 
         case "View All Employees By Role":
-          viewRoles();
+          viewEmployeesbyRole();
           break;
 
         case "View All Employees By Department":
-          viewDepartments();
+          viewEmployeesbyDepartment();
           break;
 
         case "Update Employee":
@@ -69,4 +69,15 @@ const startApp = () => {
           break;
       }
     });
+};
+// View all employees
+const viewEmployees = () => {
+  connection.query(
+    "SELECT e.id, e.first_name, e.last_name, role.title, department.name AS department, role.salary, concat(m.first_name, ' ' ,  m.last_name) AS manager FROM employee e LEFT JOIN employee m ON e.manager_id = m.id INNER JOIN role ON e.role_id = role.id INNER JOIN department ON role.department_id = department.id ORDER BY ID ASC",
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      startPrompt();
+    }
+  );
 };
