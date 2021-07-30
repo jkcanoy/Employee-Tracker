@@ -113,7 +113,7 @@ const viewDepartments = () => {
   );
 };
 //  Select role function to call when adding employee
-var roleArr = [];
+let roleArr = [];
 function selectRole() {
   connection.query("SELECT * FROM role", function (err, res) {
     if (err) throw err;
@@ -124,10 +124,24 @@ function selectRole() {
   return roleArr;
 }
 // Select manager function to call when adding employee
-var managerArr = [];
+let managerArr = [];
 function selectManager() {
   connection.query(
     "SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",
+    function (err, res) {
+      if (err) throw err;
+      for (var i = 0; i < res.length; i++) {
+        managerArr.push(res[i].first_name);
+      }
+    }
+  );
+  return managerArr;
+}
+// Select employee function to call when updating employee
+let employeeArr = [];
+function selectEmployee() {
+  connection.query(
+    "SELECT employee.id, concat(employee.first_name, ' ' ,  employee.last_name) AS Employee FROM employee ORDER BY Employee ASC",
     function (err, res) {
       if (err) throw err;
       for (var i = 0; i < res.length; i++) {
@@ -183,7 +197,7 @@ const addEmployee = () => {
       );
     });
 };
-// Update Employee
+// Update Employee role
 
 // Add Role
 
