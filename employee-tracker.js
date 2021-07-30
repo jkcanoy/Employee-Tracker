@@ -123,3 +123,22 @@ function selectRole() {
   });
   return roleArr;
 }
+// Select manager function to call when adding employee
+var managerArr = [];
+function selectManager() {
+  connection.query(
+    "SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",
+    function (err, res) {
+      if (err) throw err;
+      for (var i = 0; i < res.length; i++) {
+        managerArr.push(res[i].first_name);
+      }
+    }
+  );
+  return managerArr;
+}
+// Add Employee
+
+// Add Role
+
+// Add Department
