@@ -44,12 +44,12 @@ const startApp = () => {
           viewEmployees();
           break;
 
-        case "View All Employees By Role":
-          viewEmployeesbyRole();
+        case "View All Roles":
+          viewRoles();
           break;
 
-        case "View All Employees By Department":
-          viewEmployeesbyDepartment();
+        case "View All Departments":
+          viewDepartments();
           break;
 
         case "Update Employee":
@@ -70,14 +70,56 @@ const startApp = () => {
       }
     });
 };
-// View all employees
+// View all Employees
 const viewEmployees = () => {
+  // query to view all employees
   connection.query(
     "SELECT e.id, e.first_name, e.last_name, role.title, department.name AS department, role.salary, concat(m.first_name, ' ' ,  m.last_name) AS manager FROM employee e LEFT JOIN employee m ON e.manager_id = m.id INNER JOIN role ON e.role_id = role.id INNER JOIN department ON role.department_id = department.id ORDER BY ID ASC",
     function (err, res) {
       if (err) throw err;
+      //   display in table
       console.table(res);
-      startPrompt();
+      //   return to application start
+      startApp();
     }
   );
 };
+// View all Roles
+const viewRoles = () => {
+  // query to view all roles
+  connection.query(
+    "SELECT e.first_name, e.last_name, department.name AS  FROM employee JOIN role ON e.role_id = role.id;",
+    function (err, res) {
+      if (err) throw err;
+      //   display in table
+      console.table(res);
+      //   return to application start
+      startApp();
+    }
+  );
+};
+// View All Departments
+const viewDepartments = () => {
+  // query to view all departments
+  connection.query(
+    "SELECT e.first_name, e.last_name, department.name AS Department FROM employee e JOIN role ON e.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;",
+    function (err, res) {
+      if (err) throw err;
+      //   display in table
+      console.table(res);
+      //   return to application start
+      startApp();
+    }
+  );
+};
+//  Select role function to call when adding employee
+var roleArr = [];
+function selectRole() {
+  connection.query("SELECT * FROM role", function (err, res) {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      roleArr.push(res[i].title);
+    }
+  });
+  return roleArr;
+}
