@@ -1,7 +1,7 @@
 USE employee_db;
-
+-- department seeds
 INSERT INTO department (name) VALUES ("Sales"), ("Engineering"), ("Finance"), ("Legal");
-
+-- role seeds
 INSERT INTO role (title, salary, department_id) VALUES
 ("Sales Lead", 100000, 1),
 ("Salesperson", 80000, 1),
@@ -11,7 +11,7 @@ INSERT INTO role (title, salary, department_id) VALUES
 ("Finance Lead", 200000, 3),
 ("Legal Team Lead", 250000, 4),
 ("Lawyer", 190000, 4);
-
+-- employee seeds
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES
 ("Winston", "Schmidt", 6, NULL),
 ("Nick", "Miller", 7, NULL),
