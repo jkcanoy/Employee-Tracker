@@ -57,7 +57,7 @@ const startApp = () => {
           break;
 
         case "Add Employee":
-          addEmployees();
+          addEmployee();
           break;
 
         case "Add Role":
@@ -65,7 +65,7 @@ const startApp = () => {
           break;
 
         case "Add Department":
-          addRole();
+          addDepartment();
           break;
       }
     });
@@ -138,6 +138,52 @@ function selectManager() {
   return managerArr;
 }
 // Add Employee
+const addEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Enter employee's first name",
+        name: "firstName",
+      },
+      {
+        type: "input",
+        message: "Enter employee's last name",
+        name: "lastName",
+      },
+      {
+        type: "list",
+        message: "Select employee's role",
+        name: "role",
+        choices: selectRole(),
+      },
+      {
+        type: "list",
+        message: "Select employee's manager",
+        name: "manager",
+        choices: selectManager(),
+      },
+    ])
+    .then(function (value) {
+      let roleId = selectRole().indexOf(value.role) + 1;
+      let managerId = selectManager().indexOf(value.manager) + 1;
+      connection.query(
+        "INSERT INTO employee SET ?",
+        {
+          first_name: val.firstName,
+          last_name: val.lastName,
+          manager_id: managerId,
+          role_id: roleId,
+        },
+        function (err) {
+          if (err) throw err;
+          console.table(val);
+          startPrompt();
+        }
+      );
+    });
+};
+// Update Employee
 
 // Add Role
 
