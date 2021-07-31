@@ -137,20 +137,6 @@ function selectManager() {
   );
   return managerArr;
 }
-// Select employee function to call when updating employee
-let employeeArr = [];
-function selectEmployee() {
-  connection.query(
-    "SELECT employee.id, concat(employee.first_name, ' ' ,  employee.last_name) AS Employee FROM employee ORDER BY Employee ASC",
-    function (err, res) {
-      if (err) throw err;
-      for (var i = 0; i < res.length; i++) {
-        managerArr.push(res[i].first_name);
-      }
-    }
-  );
-  return managerArr;
-}
 // Add Employee
 const addEmployee = () => {
   inquirer
@@ -192,13 +178,57 @@ const addEmployee = () => {
         function (err) {
           if (err) throw err;
           console.table(val);
-          startPrompt();
+          startApp();
         }
       );
     });
 };
 // Update Employee role
-
+const updateEmployees = () => {
+  connection.query(
+    "SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;",
+    function (err, res) {
+      if (err) throw err;
+      console.log(res);
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            message: "Select employee to be updated",
+            name: "employee",
+            choices: function () {
+              var lastName = [];
+              for (var i = 0; i < res.length; i++) {
+                lastName.push(res[i].last_name);
+              }
+              return lastName;
+            },
+          },
+          {
+            type: "list",
+            message: "Select employee's new title",
+            name: "role",
+            choices: selectRole(),
+          },
+        ])
+        .then(function (value) {
+          let roleId = selectRole().indexOf(value.role) + 1;
+          connection.query("UPDATE employee SET WHERE ?"),
+            {
+              employee: value.employee,
+            },
+            {
+              role: roleId,
+            },
+            function (err) {
+              if (err) throw err;
+              console.table(value);
+              startApp();
+            };
+        });
+    }
+  );
+};
 // Add Role
 
 // Add Department
