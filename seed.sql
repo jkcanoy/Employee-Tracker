@@ -1,4 +1,5 @@
 USE employee_db;
+SET FOREIGN_KEY_CHECKS=0;
 -- department seeds
 INSERT INTO department (name) VALUES ("Sales"), ("Engineering"), ("Finance"), ("Legal");
 -- role seeds
