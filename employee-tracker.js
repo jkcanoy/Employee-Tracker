@@ -29,8 +29,8 @@ const startApp = () => {
         name: "action",
         choices: [
           "View All Employees",
-          "View All Employees By Role",
-          "View All Employees By Deparment",
+          "View All Roles",
+          "View All Departments",
           "Update Employee",
           "Add Employee",
           "Add Role",
@@ -88,7 +88,7 @@ const viewEmployees = () => {
 const viewRoles = () => {
   // query to view all roles
   connection.query(
-    "SELECT e.first_name, e.last_name, department.name AS  FROM employee JOIN role ON e.role_id = role.id;",
+    "SELECT employee.first_name, employee.last_name, role.title AS Title FROM employee JOIN role ON employee.role_id = role.id;",
     function (err, res) {
       if (err) throw err;
       //   display in table
@@ -102,7 +102,7 @@ const viewRoles = () => {
 const viewDepartments = () => {
   // query to view all departments
   connection.query(
-    "SELECT e.first_name, e.last_name, department.name AS Department FROM employee e JOIN role ON e.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;",
+    "SELECT employee.first_name, employee.last_name, department.name AS Department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;",
     function (err, res) {
       if (err) throw err;
       //   display in table
