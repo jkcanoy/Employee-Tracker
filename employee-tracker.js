@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const consoleTable = require("console.table");
+const { title } = require("process");
 
 require("dotenv").config();
 
@@ -74,7 +75,7 @@ const startApp = () => {
 const viewEmployees = () => {
   // query to view all employees
   connection.query(
-    "SELECT e.id, e.first_name, e.last_name, role.title, department.name AS department, role.salary, concat(m.first_name, ' ' ,  m.last_name) AS manager FROM employee e LEFT JOIN employee m ON e.manager_id = m.id INNER JOIN role ON e.role_id = role.id INNER JOIN department ON role.department_id = department.id ORDER BY ID ASC",
+    "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id left join employee e on employee.manager_id = e.id;",
     function (err, res) {
       if (err) throw err;
       //   display in table
@@ -230,5 +231,61 @@ const updateEmployees = () => {
   );
 };
 // Add Role
-
+addRole = () => {
+  connection.query(
+    "SELECT role.title AS Title, role.salary AS Salary FROM role",
+    function (err, res) {
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            message: "Enter the new role",
+            name: "roleTitle",
+          },
+          {
+            type: "input",
+            message: "Enter the estimated salary",
+            name: "roleSalary",
+          },
+        ])
+        .then(function (res) {
+          connection.query(
+            "INSERT INTO role SET ?",
+            {
+              title: res.roleTitle,
+              salary: res.roleSalary,
+            },
+            function (err) {
+              if (err) throw err;
+              console.table(res);
+              startApp();
+            }
+          );
+        });
+    }
+  );
+};
 // Add Department
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Enter the new department",
+        name: "newDepartment",
+      },
+    ])
+    .then(function (res) {
+      var query = connection.query(
+        "INSERT INTO department SET ? ",
+        {
+          name: res.newDepartment,
+        },
+        function (err) {
+          if (err) throw err;
+          console.table(res);
+          startApp();
+        }
+      );
+    });
+}
