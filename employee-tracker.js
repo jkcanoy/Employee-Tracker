@@ -171,14 +171,14 @@ const addEmployee = () => {
       connection.query(
         "INSERT INTO employee SET ?",
         {
-          first_name: val.firstName,
-          last_name: val.lastName,
+          first_name: value.firstName,
+          last_name: value.lastName,
           manager_id: managerId,
           role_id: roleId,
         },
         function (err) {
           if (err) throw err;
-          console.table(val);
+          console.table(value);
           startApp();
         }
       );
@@ -187,8 +187,9 @@ const addEmployee = () => {
 // Update Employee role
 const updateEmployees = () => {
   connection.query(
-    "SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;",
+    "SELECT employee.first_name, role.title FROM employee JOIN role ON employee.role_id = role.id;",
     function (err, res) {
+      // console.log(res)
       if (err) throw err;
       console.log(res);
       inquirer
@@ -196,36 +197,38 @@ const updateEmployees = () => {
           {
             type: "list",
             message: "Select employee to be updated",
-            name: "employee",
+            name: "id",
             choices: function () {
-              var lastName = [];
+              let firstName = [];
               for (var i = 0; i < res.length; i++) {
-                lastName.push(res[i].last_name);
+                firstName.push(res[i].first_name);
               }
-              return lastName;
+              return firstName;
             },
           },
           {
             type: "list",
-            message: "Select employee's new title",
+            message: "Select employee's new title? ",
             name: "role",
             choices: selectRole(),
           },
         ])
         .then(function (value) {
           let roleId = selectRole().indexOf(value.role) + 1;
-          connection.query("UPDATE employee SET WHERE ?"),
+          connection.query(
+            "UPDATE employee SET WHERE ?",
             {
-              employee: value.employee,
+              first_name: value.firstName,
             },
             {
-              role: roleId,
+              role_id: roleId,
             },
             function (err) {
               if (err) throw err;
               console.table(value);
               startApp();
-            };
+            }
+          );
         });
     }
   );
