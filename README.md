@@ -27,7 +27,7 @@ Users are prompted by the application to select what they would to do. Users can
 
 ## Usage
 
-1. Access E-commerce Back End through the command line on your local machine.
+1. Access Employee-Tracker through the command line on your local machine.
 2. Run `npm run start` to begin Inquirer prompts.
 3. Select prompts from the list provided and answer questions.
 
