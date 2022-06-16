@@ -4,7 +4,7 @@
 
 ## Description
 
-This application uses commmand line input, Node, mySQL, and Inquirer to create an Employee Tracker
+This application uses command line input, Node, mySQL, and Inquirer to create an Employee Tracker
 
 Users are prompted by the application to select what they would to do. Users can choose to see all employees, departments, and roles, as well as update employees and add new roles, employees, and departments.
 
